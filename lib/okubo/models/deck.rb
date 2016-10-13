@@ -42,22 +42,22 @@ module Okubo
     # Returns a suggested word review sequence.
     #
     def review
-      [:untested, :failed, :expired].inject([]) do |words, s| 
-        words += self.items.send(s).order('random()').map(&:source)
+      [:untested, :failed, :expired].inject([]) do |words, s|
+        words += self.items.send(s).order('random()')
       end
     end
 
     def next
       word = nil
       [:untested, :failed, :expired].each do |category|
-        word = self.items.send(category).order('random()').limit(1).map(&:source).first
+        word = self.items.send(category).order('random()').limit(1).first
         break if word
       end
       word
     end
 
     def last
-      self.items.order('created_at desc').limit(1).first.try(:source)
+      self.items.order('created_at desc').limit(1).first
     end
 
     def untested
