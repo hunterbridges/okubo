@@ -8,6 +8,13 @@ module Okubo
     scope :known, lambda{where(["box > ? and next_review > ?", 0, Time.now])}
     scope :expired, lambda{where(["box > ? and next_review <= ?", 0, Time.now])}
 
+    scope :due_as_of, ->(time) {
+      where(["box = ? and last_reviewed is not null", 0])
+        .or(where(["box > ? and next_review <= ?", 0, time]))
+        .order('random()')
+    }
+
+
     DELAYS = [
       5.minutes, # Apprentice
       4.hours,
