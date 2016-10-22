@@ -57,7 +57,8 @@ module Okubo
     end
 
     def wrong!
-      self[:box] = 0
+      self[:box] -= 1
+      self[:box] = 0 if self[:box] < 0
       self.times_wrong += 1
       self.last_reviewed = Time.now
       self.next_review = nil
